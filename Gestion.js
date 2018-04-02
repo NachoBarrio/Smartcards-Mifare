@@ -10,7 +10,7 @@ var LastKey = KTL.concat(KTR);
 
 deskey.setComponent(Key.DES, LastKey);
 
-var msgConcat = new ByteString("",HEX);
+
 
 resp = card.plainApdu(new ByteString("FF 00 00 00 02 1A 00", HEX));
 print("Código SW: " + card.SW.toString(16));
@@ -49,9 +49,9 @@ print("comparar aleatorios: "+descifradoShift+"<----------->"+RndT);
 
 // -------------------   escribir páginas -------------------- 
 //Escribir en el bloque 0x04
-var msg = new ByteString("TODO",ASCII);
+var msg = new ByteString("UNOC",ASCII);
 var lng = msg.length.toString(HEX);
-msgConcat = msgConcat.concat(msg.toString(HEX));
+msgConcat = new ByteString(msg,HEX);
 if(msg.length < 16){
  lng = "0"+msg.length
 }
@@ -60,7 +60,7 @@ print("Código SW: " + card.SW.toString(16));
 //Escribir en el bloque 0x05
 var msg = new ByteString("HT01",ASCII);
 var lng = msg.length.toString(HEX);
-msgConcat = msgConcat.concat(msg.toString(HEX));
+msgConcat = msgConcat.concat(msg);
 if(msg.length < 16){
  lng = "0"+msg.length
 }
@@ -69,7 +69,7 @@ print("Código SW: " + card.SW.toString(16));
 //Escribir en el bloque 0x06
 var msg = new ByteString("E001",ASCII);
 var lng = msg.length.toString(HEX);
-msgConcat = msgConcat.concat(msg.toString(HEX));
+msgConcat = msgConcat.concat(msg);
 if(msg.length < 16){
  lng = "0"+msg.length
 }
@@ -78,7 +78,7 @@ print("Código SW: " + card.SW.toString(16));
 //Escribir en el bloque 0x07
 var msg = new ByteString("2606",ASCII);
 var lng = msg.length.toString(HEX);
-msgConcat = msgConcat.concat(msg.toString(HEX));
+msgConcat = msgConcat.concat(msg);
 if(msg.length < 16){
  lng = "0"+msg.length
 }
@@ -87,7 +87,7 @@ print("Código SW: " + card.SW.toString(16));
 //Escribir en el bloque 0x08
 var msg = new ByteString("1989",ASCII);
 var lng = msg.length.toString(HEX);
-msgConcat = msgConcat.concat(msg.toString(HEX));
+msgConcat = msgConcat.concat(msg);
 if(msg.length < 16){
  lng = "0"+msg.length
 }
@@ -96,7 +96,7 @@ print("Código SW: " + card.SW.toString(16));
 //Escribir en el bloque 0x09
 var msg = new ByteString("2503",ASCII);
 var lng = msg.length.toString(HEX);
-msgConcat = msgConcat.concat(msg.toString(HEX));
+msgConcat = msgConcat.concat(msg);
 if(msg.length < 16){
  lng = "0"+msg.length
 }
@@ -105,7 +105,7 @@ print("Código SW: " + card.SW.toString(16));
 //Escribir en el bloque 0x0A
 var msg = new ByteString("2018",ASCII);
 var lng = msg.length.toString(HEX);
-msgConcat = msgConcat.concat(msg.toString(HEX));
+msgConcat = msgConcat.concat(msg);
 if(msg.length < 16){
  lng = "0"+msg.length
 }
@@ -114,7 +114,7 @@ print("Código SW: " + card.SW.toString(16));
 //Escribir en el bloque 0x0B
 var msg = new ByteString("0025",ASCII);
 var lng = msg.length.toString(HEX);
-msgConcat = msgConcat.concat(msg.toString(HEX));
+msgConcat = msgConcat.concat(msg);
 if(msg.length < 16){
  lng = "0"+msg.length
 }
@@ -142,9 +142,15 @@ print("pintar mac: "+MAC);
 //Escribir en el bloque 0x0C
 var msg = MAC;
 var lng = msg.length.toString(HEX);
-msgConcat = msgConcat.concat(msg.toString(HEX));
 if(msg.length < 16){
  lng = "0"+msg.length
 }
 resp = card.plainApdu(new ByteString("FF D6 00 0C"+lng, HEX).concat(msg));
+print("Código SW: " + card.SW.toString(16));
+
+//establecer restriciones
+lng = "04";
+resp = card.plainApdu(new ByteString("FF D6 00 2A"+lng, HEX).concat(new ByteString("04 00 00 00",HEX)));
+print("Código SW: " + card.SW.toString(16));
+resp = card.plainApdu(new ByteString("FF D6 00 2B"+lng, HEX).concat(new ByteString("00 00 00 00",HEX)));
 print("Código SW: " + card.SW.toString(16));
